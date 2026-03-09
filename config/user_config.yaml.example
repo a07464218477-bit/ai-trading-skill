@@ -1,0 +1,150 @@
+# ================================================================
+#   AI Auto Trading System - Configuration Template
+#   复制此文件为 user_config.yaml，填写你的 API Key 后启动
+#   Copy this file to user_config.yaml, fill in your API keys
+# ================================================================
+
+# ----------------------------------------------------------------
+# System
+# ----------------------------------------------------------------
+system:
+  enabled: true                    # Master switch / 总开关
+  paper_trading: true              # Paper trading mode (no real orders) / 模拟模式
+  log_level: "INFO"                # DEBUG / INFO / WARNING
+
+  # Price monitor interval (seconds) / 价格监控频率（秒）
+  # 5s  - High frequency (1m/5m candles)
+  # 15s - Medium frequency (15m/1h candles) ← recommended
+  # 30s - Default, suitable for most users
+  # 60s - Low frequency (4h/daily candles)
+  monitor_interval: 30
+
+# ----------------------------------------------------------------
+# Exchange API Keys / 交易所 API Key
+# ----------------------------------------------------------------
+exchanges:
+  binance:
+    enabled: false
+    api_key: ""                    # Your Binance API Key
+    api_secret: ""                 # Your Binance Secret Key
+    testnet: false                 # true = use testnet
+
+  okx:
+    enabled: false
+    api_key: ""                    # Your OKX API Key
+    api_secret: ""                 # Your OKX Secret Key
+    passphrase: ""                 # Your OKX API Passphrase
+    testnet: false
+
+  polymarket:
+    enabled: false
+    private_key: ""                # Your MetaMask wallet private key
+    proxy_address: ""              # CLOB proxy contract address (optional)
+    chain: "polygon"
+
+# ----------------------------------------------------------------
+# Markets / 交易对
+# ----------------------------------------------------------------
+markets:
+  binance:
+    symbols:
+      - "BTC/USDT"
+      - "ETH/USDT"
+      - "XAU/USDT"               # Gold / 黄金
+    quote_currency: "USDT"
+
+  okx:
+    symbols:
+      - "BTC-USDT"
+      - "ETH-USDT"
+      - "XAU-USD"
+    quote_currency: "USDT"
+
+  polymarket:
+    auto_scan: true
+    min_liquidity: 10000          # Min liquidity in USDC
+    max_markets: 5
+
+# ----------------------------------------------------------------
+# Strategy Parameters / 策略参数
+# ----------------------------------------------------------------
+strategy:
+  analysis:
+    adx_trend_threshold: 25       # ADX > 25 = trending market
+    adx_range_threshold: 20       # ADX < 20 = ranging market
+    timeframe: "1h"               # 1m / 5m / 15m / 1h / 4h / 1d
+    lookback_candles: 100
+
+  # Oscillation Strategy (mean reversion) / 震荡策略
+  oscillation:
+    enabled: true
+    rsi_oversold: 35              # RSI < 35 → buy signal
+    rsi_overbought: 65            # RSI > 65 → sell signal
+    bollinger_period: 20
+    bollinger_std: 2.0
+    grid_levels: 5
+    grid_spacing_atr: 0.5
+
+  # Trend Strategy (trend following) / 趋势策略
+  trend:
+    enabled: true
+    ma_fast: 20
+    ma_slow: 60
+    macd_fast: 12
+    macd_slow: 26
+    macd_signal: 9
+    volume_multiplier: 1.5        # Volume must be > avg × 1.5 to confirm signal
+    trailing_stop_pct: 0.02       # Trailing stop 2%
+
+# ----------------------------------------------------------------
+# Risk Management / 风险管理
+# ----------------------------------------------------------------
+risk:
+  total_capital: 1000             # Total capital in USDT
+  max_positions: 3                # Max simultaneous positions
+  position_size_pct: 0.10         # 10% of capital per trade
+  max_loss_per_trade: 0.02        # Max 2% loss per trade
+  stop_loss_pct: 0.015            # Stop loss 1.5%
+  take_profit_pct: 0.03           # Take profit 3%
+  max_daily_loss: 0.05            # Stop trading if daily loss > 5%
+  risk_reward_ratio: 2.0          # Min R:R ratio to enter trade
+
+# ----------------------------------------------------------------
+# Notifications / 通知设置（至少启用一个）
+# ----------------------------------------------------------------
+notifications:
+
+  # Telegram
+  telegram:
+    enabled: false
+    bot_token: ""                  # Get from @BotFather
+    chat_id: ""                    # Get from @userinfobot
+
+  # WeChat via PushPlus (recommended) / 微信推送（推荐）
+  # Register at https://www.pushplus.plus
+  wechat_pushplus:
+    enabled: false
+    token: ""
+    channel: "wechat"
+    topic: ""                      # Group push code (leave empty for personal)
+
+  # WeChat via Server酱 (backup) / 微信备用方案
+  # Register at https://sct.ftqq.com
+  wechat_ftqq:
+    enabled: false
+    send_key: ""
+
+  # Feishu (Lark) webhook / 飞书群机器人
+  feishu:
+    enabled: false
+    webhook_url: ""
+    secret: ""                     # Signing secret (optional)
+
+  # QQ via go-cqhttp / QQ推送
+  # Requires local go-cqhttp: https://github.com/Mrs4s/go-cqhttp
+  qq:
+    enabled: false
+    host: "http://127.0.0.1:5700"
+    access_token: ""
+    user_id: ""                    # QQ number for private message
+    group_id: ""                   # QQ group number
