@@ -170,7 +170,7 @@ For a **fully managed setup** including:
 
 **Contact us for professional installation service.**
 
-> 📩 专业搭建服务请联系：[填写你的联系方式，如微信号/邮箱]
+> 📩 专业搭建服务请联系：[JeeLinsun]绿泡泡
 > 提供一对一安装、策略调优、通知配置和技术支持
 
 ---
